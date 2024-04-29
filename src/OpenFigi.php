@@ -20,14 +20,14 @@ class OpenFigi
 
     /**
      * @param list<MappingJob> $mappingJobs
-     * @return list<list<FigiResult>>
+     * @return list<list<FigiResult>|null>
      */
     public function mapping(array $mappingJobs,): array
     {
         /**
-         * @var array{
-         *     0: array{
-         *         data: list<array{
+         * @var list<
+         *     array{
+         *         data?: list<array{
          *             figi: string,
          *             securityType: string,
          *             marketSector: string,
@@ -39,18 +39,27 @@ class OpenFigi
          *             securityType2: string,
          *             securityDescription: string,
          *         }>,
+         *         warning?: string
          *     }
-         *  } $mappingResults
+         *  > $responseContents
          */
-        $mappingResults = json_decode($this->client->post(path: '/v3/mapping', data: $mappingJobs), associative: true);
+        $responseContents = json_decode($this->client->post(path: '/v3/mapping', data: $mappingJobs), associative: true);
 
-        return array_map(
-            fn(array $mappingResult): array => array_map(
+        $mappingResults = [];
+
+        foreach ($responseContents as $responseContent) {
+            if (!isset($responseContent['data'])) {
+                $mappingResults[] = null;
+                continue;
+            }
+
+            $mappingResults[] = array_map(
                 fn (array $item): FigiResult => FigiResult::fromArray($item),
-                $mappingResult['data'],
-            ),
-            $mappingResults,
-        );
+                $responseContent['data'],
+            );
+        }
+
+        return $mappingResults;
     }
 
     public function getMaxJobsPerRequest(): int

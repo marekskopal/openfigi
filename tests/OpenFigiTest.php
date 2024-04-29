@@ -28,6 +28,14 @@ class OpenFigiTest extends TestCase
         $mappingJob = new MappingJob(idType: IdTypeEnum::Ticker, idValue: 'AAPL');
 
         $this->assertInstanceOf(FigiResult::class, $openFigi->mapping([$mappingJob])[0][0]);
+
+        $mappingJob1 = new MappingJob(idType: IdTypeEnum::Ticker, idValue: 'AAPL');
+        $mappingJob2 = new MappingJob(idType: IdTypeEnum::Ticker, idValue: '2WDCF');
+
+        $mappingResults = $openFigi->mapping([$mappingJob1, $mappingJob2]);
+
+        $this->assertInstanceOf(FigiResult::class, $mappingResults[0][0]);
+        $this->assertNull($mappingResults[1]);
     }
 
     public function testGetMaxJobsPerRequest(): void
