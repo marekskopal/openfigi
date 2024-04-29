@@ -85,4 +85,9 @@ class Client
 
         return $request;
     }
+
+    public function getMaxJobsPerRequest(): int
+    {
+        return $this->config->apiKey !== null ? 100 : 10;
+    }
 }

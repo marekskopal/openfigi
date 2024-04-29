@@ -52,4 +52,9 @@ class OpenFigi
             $mappingResults,
         );
     }
+
+    public function getMaxJobsPerRequest(): int
+    {
+        return $this->client->getMaxJobsPerRequest();
+    }
 }

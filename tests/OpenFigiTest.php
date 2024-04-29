@@ -29,4 +29,15 @@ class OpenFigiTest extends TestCase
 
         $this->assertInstanceOf(FigiResult::class, $openFigi->mapping([$mappingJob])[0][0]);
     }
+
+    public function testGetMaxJobsPerRequest(): void
+    {
+        $openFigi = new OpenFigi(new Config());
+
+        $this->assertEquals(10, $openFigi->getMaxJobsPerRequest());
+
+        $openFigi = new OpenFigi(new Config('abc'));
+
+        $this->assertEquals(100, $openFigi->getMaxJobsPerRequest());
+    }
 }
