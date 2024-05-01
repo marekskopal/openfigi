@@ -13,10 +13,10 @@ readonly class FigiResult
         public string $ticker,
         public string $name,
         public string $exchCode,
-        public string $shareClassFIGI,
+        public ?string $shareClassFIGI,
         public string $compositeFIGI,
         public string $securityType2,
-        public string $securityDescription,
+        public ?string $securityDescription,
     ) {
     }
 
@@ -30,10 +30,10 @@ readonly class FigiResult
          *     ticker: string,
          *     name: string,
          *     exchCode: string,
-         *     shareClassFIGI: string,
+         *     shareClassFIGI: string|null,
          *     compositeFIGI: string,
          *     securityType2: string,
-         *     securityDescription: string,
+         *     securityDescription: string|null,
          *  } $responseContents
          */
         $responseContents = json_decode($json, associative: true);
@@ -49,10 +49,10 @@ readonly class FigiResult
      *     ticker: string,
      *     name: string,
      *     exchCode: string,
-     *     shareClassFIGI: string,
+     *     shareClassFIGI: string|null,
      *     compositeFIGI: string,
      *     securityType2: string,
-     *     securityDescription: string,
+     *     securityDescription: string|null,
      *  } $data
      */
     public static function fromArray(array $data): self
