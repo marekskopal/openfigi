@@ -16,17 +16,17 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 
-class Client
+readonly class Client
 {
-    private const BaseUri = 'https://api.openfigi.com';
+    private const string BaseUri = 'https://api.openfigi.com';
 
-    private readonly ClientInterface $httpClient;
+    private ClientInterface $httpClient;
 
-    private readonly RequestFactoryInterface $requestFactory;
+    private RequestFactoryInterface $requestFactory;
 
-    private readonly StreamFactoryInterface $streamFactory;
+    private StreamFactoryInterface $streamFactory;
 
-    public function __construct(private readonly Config $config)
+    public function __construct(private Config $config)
     {
         $this->httpClient = Psr18ClientDiscovery::find();
         $this->requestFactory = Psr17FactoryDiscovery::findRequestFactory();

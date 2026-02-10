@@ -9,9 +9,9 @@ use MarekSkopal\OpenFigi\Config\Config;
 use MarekSkopal\OpenFigi\Dto\FigiResult;
 use MarekSkopal\OpenFigi\Dto\MappingJob;
 
-class OpenFigi
+readonly class OpenFigi
 {
-    private readonly Client $client;
+    private Client $client;
 
     public function __construct(Config $config)
     {

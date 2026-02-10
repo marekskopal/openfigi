@@ -10,7 +10,6 @@ readonly class Config
         public ?string $apiKey = null,
         public int $tooManyRequestsRepeat = 6,
         public int $tooManyRequestsWaitTime = 10,
-    )
-    {
+    ) {
     }
 }
