@@ -34,9 +34,7 @@ readonly class FigiResult
     ) {
     }
 
-    /**
-     * @param FigiResultType $data
-     */
+    /** @param FigiResultType $data */
     public static function fromArray(array $data): self
     {
         return new self(

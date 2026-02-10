@@ -27,25 +27,35 @@ class OpenFigiTest extends TestCase
 
         $mappingJob = new MappingJob(idType: IdTypeEnum::Ticker, idValue: 'AAPL');
 
-        $this->assertInstanceOf(FigiResult::class, $openFigi->mapping([$mappingJob])[0][0]);
+        $mapping = $openFigi->mapping([$mappingJob]);
+
+        self::assertIsArray($mapping);
+        self::assertArrayHasKey(0, $mapping);
+        self::assertIsArray($mapping[0]);
+        self::assertArrayHasKey(0, $mapping[0]);
+        self::assertInstanceOf(FigiResult::class, $mapping[0][0]);
 
         $mappingJob1 = new MappingJob(idType: IdTypeEnum::Ticker, idValue: 'AAPL');
         $mappingJob2 = new MappingJob(idType: IdTypeEnum::Ticker, idValue: '2WDCF');
 
         $mappingResults = $openFigi->mapping([$mappingJob1, $mappingJob2]);
 
-        $this->assertInstanceOf(FigiResult::class, $mappingResults[0][0]);
-        $this->assertNull($mappingResults[1]);
+        self::assertIsArray($mappingResults);
+        self::assertArrayHasKey(0, $mappingResults);
+        self::assertIsArray($mappingResults[0]);
+        self::assertArrayHasKey(0, $mappingResults[0]);
+        self::assertInstanceOf(FigiResult::class, $mappingResults[0][0]);
+        self::assertNull($mappingResults[1]);
     }
 
     public function testGetMaxJobsPerRequest(): void
     {
         $openFigi = new OpenFigi(new Config());
 
-        $this->assertEquals(10, $openFigi->getMaxJobsPerRequest());
+        self::assertSame(10, $openFigi->getMaxJobsPerRequest());
 
         $openFigi = new OpenFigi(new Config('abc'));
 
-        $this->assertEquals(100, $openFigi->getMaxJobsPerRequest());
+        self::assertSame(100, $openFigi->getMaxJobsPerRequest());
     }
 }

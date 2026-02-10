@@ -91,6 +91,6 @@ readonly class MappingJob implements JsonSerializable
                 $this->maturity,
             ) : null,
             'stateCode' => $this->stateCode,
-        ], fn($value): bool => $value !== null);
+        ], fn(mixed $value): bool => $value !== null);
     }
 }
