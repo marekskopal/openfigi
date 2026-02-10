@@ -4,6 +4,20 @@ declare(strict_types=1);
 
 namespace MarekSkopal\OpenFigi\Dto;
 
+/**
+ * @phpstan-type FigiResultType array{
+ *      figi: string,
+ *      securityType: string,
+ *      marketSector: string,
+ *      ticker: string,
+ *      name: string,
+ *      exchCode: string,
+ *      shareClassFIGI: string|null,
+ *      compositeFIGI: string,
+ *      securityType2: string,
+ *      securityDescription: string|null,
+ *   }
+ */
 readonly class FigiResult
 {
     public function __construct(
@@ -20,40 +34,8 @@ readonly class FigiResult
     ) {
     }
 
-    public static function fromJson(string $json): self
-    {
-        /**
-         * @var array{
-         *     figi: string,
-         *     securityType: string,
-         *     marketSector: string,
-         *     ticker: string,
-         *     name: string,
-         *     exchCode: string,
-         *     shareClassFIGI: string|null,
-         *     compositeFIGI: string,
-         *     securityType2: string,
-         *     securityDescription: string|null,
-         *  } $responseContents
-         */
-        $responseContents = json_decode($json, associative: true);
-
-        return self::fromArray($responseContents);
-    }
-
     /**
-     * @param array{
-     *     figi: string,
-     *     securityType: string,
-     *     marketSector: string,
-     *     ticker: string,
-     *     name: string,
-     *     exchCode: string,
-     *     shareClassFIGI: string|null,
-     *     compositeFIGI: string,
-     *     securityType2: string,
-     *     securityDescription: string|null,
-     *  } $data
+     * @param FigiResultType $data
      */
     public static function fromArray(array $data): self
     {
