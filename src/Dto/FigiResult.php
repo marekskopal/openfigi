@@ -11,9 +11,9 @@ namespace MarekSkopal\OpenFigi\Dto;
  *      marketSector: string,
  *      ticker: string,
  *      name: string,
- *      exchCode: string,
+ *      exchCode: string|null,
  *      shareClassFIGI: string|null,
- *      compositeFIGI: string,
+ *      compositeFIGI: string|null,
  *      securityType2: string,
  *      securityDescription: string|null,
  *   }
@@ -26,9 +26,9 @@ readonly class FigiResult
         public string $marketSector,
         public string $ticker,
         public string $name,
-        public string $exchCode,
+        public ?string $exchCode,
         public ?string $shareClassFIGI,
-        public string $compositeFIGI,
+        public ?string $compositeFIGI,
         public string $securityType2,
         public ?string $securityDescription,
     ) {
