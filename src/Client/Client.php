@@ -33,21 +33,46 @@ readonly class Client implements ClientInterface
         $this->streamFactory = Psr17FactoryDiscovery::findStreamFactory();
     }
 
-    /** @param list<MappingJob> $data */
+    public function get(string $path): string
+    {
+        return $this->getWithRetry($path);
+    }
+
+    /** @param list<MappingJob>|array<string, mixed> $data */
     public function post(string $path, array $data): string
     {
         return $this->postWithRetry($path, $data);
     }
 
-    /** @param list<MappingJob> $data */
-    private function postWithRetry(string $path, array $data, int $retryCount = 0): string
+    private function getWithRetry(string $path, int $retryCount = 0): string
     {
-        $uri = self::BaseUri . $path;
-
-        $request = $this->requestFactory->createRequest('POST', $uri);
-
+        $request = $this->requestFactory->createRequest('GET', self::BaseUri . $path);
         $request = $this->addHeaders($request);
 
+        $response = $this->httpClient->sendRequest($request);
+
+        try {
+            return $this->getContents($response);
+        } catch (TooManyRequestsException $e) {
+            if (
+                $this->config->tooManyRequestsRepeat <= 0
+                || $this->config->tooManyRequestsWaitTime <= 0
+                || $retryCount >= $this->config->tooManyRequestsRepeat
+            ) {
+                throw $e;
+            }
+
+            sleep($this->config->tooManyRequestsWaitTime);
+
+            return $this->getWithRetry($path, $retryCount + 1);
+        }
+    }
+
+    /** @param list<MappingJob>|array<string, mixed> $data */
+    private function postWithRetry(string $path, array $data, int $retryCount = 0): string
+    {
+        $request = $this->requestFactory->createRequest('POST', self::BaseUri . $path);
+        $request = $this->addHeaders($request);
         $request = $request->withBody($this->streamFactory->createStream((string) json_encode($data)));
 
         $response = $this->httpClient->sendRequest($request);
@@ -85,8 +110,7 @@ readonly class Client implements ClientInterface
             ->withHeader('User-Agent', 'marekskopal/openfigi-client:1.0.0');
 
         if ($this->config->apiKey !== null) {
-            $request = $request
-                ->withHeader('X-OPENFIGI-APIKEY', $this->config->apiKey);
+            $request = $request->withHeader('X-OPENFIGI-APIKEY', $this->config->apiKey);
         }
 
         return $request;

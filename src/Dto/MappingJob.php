@@ -11,11 +11,11 @@ use MarekSkopal\OpenFigi\Enum\IdTypeEnum;
 readonly class MappingJob implements JsonSerializable
 {
     /**
-     * @param array<DateTimeInterface|null>|null $strike
-     * @param array<DateTimeInterface|null>|null $contractSize
-     * @param array<DateTimeInterface|null>|null $coupon
-     * @param array<DateTimeInterface|null>|null $expiration
-     * @param array<DateTimeInterface|null>|null $maturity
+     * @param array{0: float|null, 1: float|null}|null $strike
+     * @param array{0: float|null, 1: float|null}|null $contractSize
+     * @param array{0: float|null, 1: float|null}|null $coupon
+     * @param array{0: DateTimeInterface|null, 1: DateTimeInterface|null}|null $expiration
+     * @param array{0: DateTimeInterface|null, 1: DateTimeInterface|null}|null $maturity
      */
     public function __construct(
         public IdTypeEnum $idType,
@@ -41,7 +41,7 @@ readonly class MappingJob implements JsonSerializable
      * @return array{
      *     idType: value-of<IdTypeEnum>,
      *     idValue: string,
-     *     exchCode?: ?string,
+     *     exchCode?: string,
      *     micCode?: string,
      *     currency?: string,
      *     marketSecDes?: string,
@@ -49,11 +49,11 @@ readonly class MappingJob implements JsonSerializable
      *     securityType2?: string,
      *     includeUnlistedEquities?: bool,
      *     optionType?: string,
-     *     strike?: array<string|null>,
-     *     contractSize?: array<string|null>,
-     *     coupon?: array<string|null>,
-     *     expiration?: array<string|null>,
-     *     maturity?: array<string|null>,
+     *     strike?: array{0: float|null, 1: float|null},
+     *     contractSize?: array{0: float|null, 1: float|null},
+     *     coupon?: array{0: float|null, 1: float|null},
+     *     expiration?: array{0: string|null, 1: string|null},
+     *     maturity?: array{0: string|null, 1: string|null},
      *     stateCode?: string
      * }
      */
@@ -70,27 +70,18 @@ readonly class MappingJob implements JsonSerializable
             'securityType2' => $this->securityType2,
             'includeUnlistedEquities' => $this->includeUnlistedEquities,
             'optionType' => $this->optionType,
-            'strike' => $this->strike !== null ? array_map(
-                fn(DateTimeInterface|null $item): ?string => $item?->format('Y-m-d'),
-                $this->strike,
-            ) : null,
-            'contractSize' => $this->contractSize !== null ? array_map(
-                fn(DateTimeInterface|null $item): ?string => $item?->format('Y-m-d'),
-                $this->contractSize,
-            ) : null,
-            'coupon' => $this->coupon !== null ? array_map(
-                fn(DateTimeInterface|null $item): ?string => $item?->format('Y-m-d'),
-                $this->coupon,
-            ) : null,
+            'strike' => $this->strike,
+            'contractSize' => $this->contractSize,
+            'coupon' => $this->coupon,
             'expiration' => $this->expiration !== null ? array_map(
-                fn(DateTimeInterface|null $item): ?string => $item?->format('Y-m-d'),
+                fn (DateTimeInterface|null $item): ?string => $item?->format('Y-m-d'),
                 $this->expiration,
             ) : null,
             'maturity' => $this->maturity !== null ? array_map(
-                fn(DateTimeInterface|null $item): ?string => $item?->format('Y-m-d'),
+                fn (DateTimeInterface|null $item): ?string => $item?->format('Y-m-d'),
                 $this->maturity,
             ) : null,
             'stateCode' => $this->stateCode,
-        ], fn(mixed $value): bool => $value !== null);
+        ], fn (mixed $value): bool => $value !== null);
     }
 }

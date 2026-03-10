@@ -7,30 +7,32 @@ namespace MarekSkopal\OpenFigi\Dto;
 /**
  * @phpstan-type FigiResultType array{
  *      figi: string,
- *      securityType: string,
- *      marketSector: string,
- *      ticker: string,
- *      name: string,
+ *      securityType: string|null,
+ *      marketSector: string|null,
+ *      ticker: string|null,
+ *      name: string|null,
  *      exchCode: string|null,
  *      shareClassFIGI: string|null,
  *      compositeFIGI: string|null,
- *      securityType2: string,
+ *      securityType2: string|null,
  *      securityDescription: string|null,
+ *      metadata: string|null,
  *   }
  */
 readonly class FigiResult
 {
     public function __construct(
         public string $figi,
-        public string $securityType,
-        public string $marketSector,
-        public string $ticker,
-        public string $name,
+        public ?string $securityType,
+        public ?string $marketSector,
+        public ?string $ticker,
+        public ?string $name,
         public ?string $exchCode,
         public ?string $shareClassFIGI,
         public ?string $compositeFIGI,
-        public string $securityType2,
+        public ?string $securityType2,
         public ?string $securityDescription,
+        public ?string $metadata,
     ) {
     }
 
@@ -48,6 +50,7 @@ readonly class FigiResult
             compositeFIGI: $data['compositeFIGI'],
             securityType2: $data['securityType2'],
             securityDescription: $data['securityDescription'],
+            metadata: $data['metadata'],
         );
     }
 }

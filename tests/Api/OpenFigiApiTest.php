@@ -6,9 +6,12 @@ namespace MarekSkopal\OpenFigi\Tests\Api;
 
 use MarekSkopal\OpenFigi\Api\OpenFigiApi;
 use MarekSkopal\OpenFigi\Client\Client;
+use MarekSkopal\OpenFigi\Dto\FilterResult;
 use MarekSkopal\OpenFigi\Dto\FigiResult;
 use MarekSkopal\OpenFigi\Dto\MappingJob;
+use MarekSkopal\OpenFigi\Dto\SearchResult;
 use MarekSkopal\OpenFigi\Enum\IdTypeEnum;
+use MarekSkopal\OpenFigi\Enum\MappingValuesKeyEnum;
 use MarekSkopal\OpenFigi\OpenFigi;
 use MarekSkopal\OpenFigi\Tests\Fixtures\Client\ClientFixture;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -20,6 +23,8 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(Client::class)]
 #[UsesClass(FigiResult::class)]
 #[UsesClass(MappingJob::class)]
+#[UsesClass(SearchResult::class)]
+#[UsesClass(FilterResult::class)]
 #[UsesClass(ClientFixture::class)]
 final class OpenFigiApiTest extends TestCase
 {
@@ -66,6 +71,42 @@ final class OpenFigiApiTest extends TestCase
         self::assertArrayHasKey(0, $mappingResults[0]);
         self::assertInstanceOf(FigiResult::class, $mappingResults[0][0]);
         self::assertNull($mappingResults[1]);
+    }
+
+    public function testValues(): void
+    {
+        $openFigiApi = new OpenFigiApi(ClientFixture::createWithResponse('mappingValuesResponse.json'));
+
+        $values = $openFigiApi->values(MappingValuesKeyEnum::IdType);
+
+        self::assertIsArray($values);
+        self::assertNotEmpty($values);
+        self::assertContainsOnlyString($values);
+    }
+
+    public function testSearch(): void
+    {
+        $openFigiApi = new OpenFigiApi(ClientFixture::createWithResponse('searchResponse.json'));
+
+        $result = $openFigiApi->search(query: 'Apple');
+
+        self::assertInstanceOf(SearchResult::class, $result);
+        self::assertIsArray($result->data);
+        self::assertNotEmpty($result->data);
+        self::assertInstanceOf(FigiResult::class, $result->data[0]);
+    }
+
+    public function testFilter(): void
+    {
+        $openFigiApi = new OpenFigiApi(ClientFixture::createWithResponse('filterResponse.json'));
+
+        $result = $openFigiApi->filter(query: 'Apple');
+
+        self::assertInstanceOf(FilterResult::class, $result);
+        self::assertIsArray($result->data);
+        self::assertNotEmpty($result->data);
+        self::assertInstanceOf(FigiResult::class, $result->data[0]);
+        self::assertIsFloat($result->total);
     }
 
     public function testGetMaxJobsPerRequest(): void

@@ -18,7 +18,12 @@ final class ClientFixture implements ClientInterface
         return new self($responseFilename);
     }
 
-    /** @param list<MappingJob> $data */
+    public function get(string $path): string
+    {
+        return $this->getResponse();
+    }
+
+    /** @param list<MappingJob>|array<string, mixed> $data */
     public function post(string $path, array $data): string
     {
         return $this->getResponse();
