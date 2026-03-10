@@ -1,6 +1,6 @@
 # OpenFIGI API client library for PHP
 
-Unofficial PHP API client library for the [OpenFIGI](https://www.openfigi.com/) API service. 
+Unofficial PHP API client library for the [OpenFIGI](https://www.openfigi.com/) API service.
 
 
 ## Install
@@ -12,17 +12,34 @@ composer require marekskopal/openfigi
 ## Usage
 
 ```php
+use MarekSkopal\OpenFigi\Config\Config;
+use MarekSkopal\OpenFigi\Dto\MappingJob;
+use MarekSkopal\OpenFigi\Enum\IdTypeEnum;
 use MarekSkopal\OpenFigi\OpenFigi;
-use MarekSkopal\OpenFigi\Enum\IntervalEnum;
 
-// Create OpenFIGI instance
-$openFigi = new OpenFigi('<yourApiKey>');
+// Create OpenFigi instance
+$openFigi = new OpenFigi(new Config(apiKey: '<yourApiKey>'));
 
-// Get the mapping for the AAPL ticker
+// Map a single ticker to FIGI
 $mappingJob = new MappingJob(idType: IdTypeEnum::Ticker, idValue: 'AAPL');
+$mappingResults = $openFigi->mapping([$mappingJob]);
 
-$mappingResults = $openFigi->mapping([$mappingJob]));
+// Search for securities
+$searchResult = $openFigi->search(query: 'Apple');
+
+// Filter securities
+$filterResult = $openFigi->filter(exchCode: 'US', securityType: 'Common Stock');
+
+// Get allowed values for a mapping key
+$values = $openFigi->values(MappingValuesKeyEnum::ExchCode);
 ```
+
+## Covered endpoints
+
+* Mapping ✅
+* Search ✅
+* Filter ✅
+* Values ✅
 
 ## Notice
 This is NOT an official OpenFIGI library, and the authors of this library are not affiliated with OpenFIGI or Bloomberg Finance L.P. in any way, shape or form.
