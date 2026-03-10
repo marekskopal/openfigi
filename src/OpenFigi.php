@@ -9,8 +9,8 @@ use MarekSkopal\OpenFigi\Api\OpenFigiApi;
 use MarekSkopal\OpenFigi\Client\Client;
 use MarekSkopal\OpenFigi\Config\Config;
 use MarekSkopal\OpenFigi\Dto\FilterResult;
-use MarekSkopal\OpenFigi\Dto\FigiResult;
 use MarekSkopal\OpenFigi\Dto\MappingJob;
+use MarekSkopal\OpenFigi\Dto\MappingJobResult;
 use MarekSkopal\OpenFigi\Dto\SearchResult;
 use MarekSkopal\OpenFigi\Enum\MappingValuesKeyEnum;
 
@@ -28,7 +28,7 @@ readonly class OpenFigi
 
     /**
      * @param list<MappingJob> $mappingJobs
-     * @return list<list<FigiResult>|null>
+     * @return list<MappingJobResult>
      */
     public function mapping(array $mappingJobs): array
     {

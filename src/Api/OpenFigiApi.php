@@ -9,6 +9,7 @@ use MarekSkopal\OpenFigi\Client\ClientInterface;
 use MarekSkopal\OpenFigi\Dto\FilterResult;
 use MarekSkopal\OpenFigi\Dto\FigiResult;
 use MarekSkopal\OpenFigi\Dto\MappingJob;
+use MarekSkopal\OpenFigi\Dto\MappingJobResult;
 use MarekSkopal\OpenFigi\Dto\SearchResult;
 use MarekSkopal\OpenFigi\Enum\MappingValuesKeyEnum;
 
@@ -21,7 +22,7 @@ readonly class OpenFigiApi
 
     /**
      * @param list<MappingJob> $mappingJobs
-     * @return list<list<FigiResult>|null>
+     * @return list<MappingJobResult>
      */
     public function mapping(array $mappingJobs): array
     {
@@ -35,21 +36,10 @@ readonly class OpenFigiApi
          */
         $responseContents = json_decode($this->client->post(path: '/v3/mapping', data: $mappingJobs), associative: true);
 
-        $mappingResults = [];
-
-        foreach ($responseContents as $responseContent) {
-            if (!isset($responseContent['data'])) {
-                $mappingResults[] = null;
-                continue;
-            }
-
-            $mappingResults[] = array_map(
-                fn (array $item): FigiResult => FigiResult::fromArray($item),
-                $responseContent['data'],
-            );
-        }
-
-        return $mappingResults;
+        return array_map(
+            fn (array $responseContent): MappingJobResult => MappingJobResult::fromArray($responseContent),
+            $responseContents,
+        );
     }
 
     /** @return list<string> */

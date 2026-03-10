@@ -9,6 +9,7 @@ use MarekSkopal\OpenFigi\Client\Client;
 use MarekSkopal\OpenFigi\Dto\FilterResult;
 use MarekSkopal\OpenFigi\Dto\FigiResult;
 use MarekSkopal\OpenFigi\Dto\MappingJob;
+use MarekSkopal\OpenFigi\Dto\MappingJobResult;
 use MarekSkopal\OpenFigi\Dto\SearchResult;
 use MarekSkopal\OpenFigi\Enum\IdTypeEnum;
 use MarekSkopal\OpenFigi\Enum\MappingValuesKeyEnum;
@@ -23,6 +24,7 @@ use PHPUnit\Framework\TestCase;
 #[UsesClass(Client::class)]
 #[UsesClass(FigiResult::class)]
 #[UsesClass(MappingJob::class)]
+#[UsesClass(MappingJobResult::class)]
 #[UsesClass(SearchResult::class)]
 #[UsesClass(FilterResult::class)]
 #[UsesClass(ClientFixture::class)]
@@ -38,9 +40,9 @@ final class OpenFigiApiTest extends TestCase
 
         self::assertIsArray($mapping);
         self::assertArrayHasKey(0, $mapping);
-        self::assertIsArray($mapping[0]);
-        self::assertArrayHasKey(0, $mapping[0]);
-        self::assertInstanceOf(FigiResult::class, $mapping[0][0]);
+        self::assertInstanceOf(MappingJobResult::class, $mapping[0]);
+        self::assertIsArray($mapping[0]->data);
+        self::assertInstanceOf(FigiResult::class, $mapping[0]->data[0]);
     }
 
     public function testMappingNotFound(): void
@@ -53,7 +55,9 @@ final class OpenFigiApiTest extends TestCase
 
         self::assertIsArray($mapping);
         self::assertArrayHasKey(0, $mapping);
-        self::assertNull($mapping[0]);
+        self::assertInstanceOf(MappingJobResult::class, $mapping[0]);
+        self::assertNull($mapping[0]->data);
+        self::assertIsString($mapping[0]->warning);
     }
 
     public function testMappingMultiple(): void
@@ -67,10 +71,12 @@ final class OpenFigiApiTest extends TestCase
 
         self::assertIsArray($mappingResults);
         self::assertArrayHasKey(0, $mappingResults);
-        self::assertIsArray($mappingResults[0]);
-        self::assertArrayHasKey(0, $mappingResults[0]);
-        self::assertInstanceOf(FigiResult::class, $mappingResults[0][0]);
-        self::assertNull($mappingResults[1]);
+        self::assertInstanceOf(MappingJobResult::class, $mappingResults[0]);
+        self::assertIsArray($mappingResults[0]->data);
+        self::assertInstanceOf(FigiResult::class, $mappingResults[0]->data[0]);
+        self::assertInstanceOf(MappingJobResult::class, $mappingResults[1]);
+        self::assertNull($mappingResults[1]->data);
+        self::assertIsString($mappingResults[1]->warning);
     }
 
     public function testValues(): void
