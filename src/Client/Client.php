@@ -10,17 +10,17 @@ use MarekSkopal\OpenFigi\Config\Config;
 use MarekSkopal\OpenFigi\Dto\MappingJob;
 use MarekSkopal\OpenFigi\Exception\ApiException;
 use MarekSkopal\OpenFigi\Exception\TooManyRequestsException;
-use Psr\Http\Client\ClientInterface;
+use Psr\Http\Client\ClientInterface as HttpClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 
-readonly class Client
+readonly class Client implements ClientInterface
 {
     private const string BaseUri = 'https://api.openfigi.com';
 
-    private ClientInterface $httpClient;
+    private HttpClientInterface $httpClient;
 
     private RequestFactoryInterface $requestFactory;
 
@@ -34,7 +34,13 @@ readonly class Client
     }
 
     /** @param list<MappingJob> $data */
-    public function post(string $path, array $data, int $retryCount = 0): string
+    public function post(string $path, array $data): string
+    {
+        return $this->postWithRetry($path, $data);
+    }
+
+    /** @param list<MappingJob> $data */
+    private function postWithRetry(string $path, array $data, int $retryCount = 0): string
     {
         $uri = self::BaseUri . $path;
 
@@ -59,7 +65,7 @@ readonly class Client
 
             sleep($this->config->tooManyRequestsWaitTime);
 
-            return $this->post($path, $data, $retryCount + 1);
+            return $this->postWithRetry($path, $data, $retryCount + 1);
         }
     }
 
