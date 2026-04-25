@@ -67,9 +67,22 @@ readonly class OpenFigi
         ?string $stateCode = null,
     ): SearchResult {
         return $this->api->search(
-            $query, $start, $exchCode, $micCode, $currency, $marketSecDes,
-            $securityType, $securityType2, $includeUnlistedEquities, $optionType,
-            $strike, $contractSize, $coupon, $expiration, $maturity, $stateCode,
+            $query,
+            $start,
+            $exchCode,
+            $micCode,
+            $currency,
+            $marketSecDes,
+            $securityType,
+            $securityType2,
+            $includeUnlistedEquities,
+            $optionType,
+            $strike,
+            $contractSize,
+            $coupon,
+            $expiration,
+            $maturity,
+            $stateCode,
         );
     }
 
@@ -99,9 +112,22 @@ readonly class OpenFigi
         ?string $stateCode = null,
     ): FilterResult {
         return $this->api->filter(
-            $query, $start, $exchCode, $micCode, $currency, $marketSecDes,
-            $securityType, $securityType2, $includeUnlistedEquities, $optionType,
-            $strike, $contractSize, $coupon, $expiration, $maturity, $stateCode,
+            $query,
+            $start,
+            $exchCode,
+            $micCode,
+            $currency,
+            $marketSecDes,
+            $securityType,
+            $securityType2,
+            $includeUnlistedEquities,
+            $optionType,
+            $strike,
+            $contractSize,
+            $coupon,
+            $expiration,
+            $maturity,
+            $stateCode,
         );
     }
 

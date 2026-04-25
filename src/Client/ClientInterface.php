@@ -10,7 +10,7 @@ interface ClientInterface
 {
     public function get(string $path): string;
 
-    /** @param list<MappingJob>|array<string, mixed> $data */
+    /** @param list<MappingJob>|array<string, string|bool|list<float|string|null>> $data */
     public function post(string $path, array $data): string;
 
     public function getMaxJobsPerRequest(): int;

@@ -6,8 +6,8 @@ namespace MarekSkopal\OpenFigi\Api;
 
 use DateTimeInterface;
 use MarekSkopal\OpenFigi\Client\ClientInterface;
-use MarekSkopal\OpenFigi\Dto\FilterResult;
 use MarekSkopal\OpenFigi\Dto\FigiResult;
+use MarekSkopal\OpenFigi\Dto\FilterResult;
 use MarekSkopal\OpenFigi\Dto\MappingJob;
 use MarekSkopal\OpenFigi\Dto\MappingJobResult;
 use MarekSkopal\OpenFigi\Dto\SearchResult;
@@ -88,9 +88,22 @@ readonly class OpenFigiApi
          */
         $responseContent = json_decode(
             $this->client->post(path: '/v3/search', data: $this->buildSearchBody(
-                $query, $start, $exchCode, $micCode, $currency, $marketSecDes,
-                $securityType, $securityType2, $includeUnlistedEquities, $optionType,
-                $strike, $contractSize, $coupon, $expiration, $maturity, $stateCode,
+                $query,
+                $start,
+                $exchCode,
+                $micCode,
+                $currency,
+                $marketSecDes,
+                $securityType,
+                $securityType2,
+                $includeUnlistedEquities,
+                $optionType,
+                $strike,
+                $contractSize,
+                $coupon,
+                $expiration,
+                $maturity,
+                $stateCode,
             )),
             associative: true,
         );
@@ -133,9 +146,22 @@ readonly class OpenFigiApi
          */
         $responseContent = json_decode(
             $this->client->post(path: '/v3/filter', data: $this->buildSearchBody(
-                $query, $start, $exchCode, $micCode, $currency, $marketSecDes,
-                $securityType, $securityType2, $includeUnlistedEquities, $optionType,
-                $strike, $contractSize, $coupon, $expiration, $maturity, $stateCode,
+                $query,
+                $start,
+                $exchCode,
+                $micCode,
+                $currency,
+                $marketSecDes,
+                $securityType,
+                $securityType2,
+                $includeUnlistedEquities,
+                $optionType,
+                $strike,
+                $contractSize,
+                $coupon,
+                $expiration,
+                $maturity,
+                $stateCode,
             )),
             associative: true,
         );
@@ -149,7 +175,7 @@ readonly class OpenFigiApi
      * @param array{0: float|null, 1: float|null}|null $coupon
      * @param array{0: DateTimeInterface|null, 1: DateTimeInterface|null}|null $expiration
      * @param array{0: DateTimeInterface|null, 1: DateTimeInterface|null}|null $maturity
-     * @return array<string, mixed>
+     * @return array<string, string|bool|list<float|string|null>>
      */
     private function buildSearchBody(
         ?string $query,

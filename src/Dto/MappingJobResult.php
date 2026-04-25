@@ -7,13 +7,9 @@ namespace MarekSkopal\OpenFigi\Dto;
 /** @phpstan-import-type FigiResultType from FigiResult */
 readonly class MappingJobResult
 {
-    /**
-     * @param list<FigiResult>|null $data
-     */
-    public function __construct(
-        public ?array $data,
-        public ?string $warning,
-    ) {
+    /** @param list<FigiResult>|null $data */
+    public function __construct(public ?array $data, public ?string $warning,)
+    {
     }
 
     /**

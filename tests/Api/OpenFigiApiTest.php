@@ -6,8 +6,8 @@ namespace MarekSkopal\OpenFigi\Tests\Api;
 
 use MarekSkopal\OpenFigi\Api\OpenFigiApi;
 use MarekSkopal\OpenFigi\Client\Client;
-use MarekSkopal\OpenFigi\Dto\FilterResult;
 use MarekSkopal\OpenFigi\Dto\FigiResult;
+use MarekSkopal\OpenFigi\Dto\FilterResult;
 use MarekSkopal\OpenFigi\Dto\MappingJob;
 use MarekSkopal\OpenFigi\Dto\MappingJobResult;
 use MarekSkopal\OpenFigi\Dto\SearchResult;

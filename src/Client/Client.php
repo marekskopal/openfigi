@@ -38,7 +38,7 @@ readonly class Client implements ClientInterface
         return $this->getWithRetry($path);
     }
 
-    /** @param list<MappingJob>|array<string, mixed> $data */
+    /** @param list<MappingJob>|array<string, string|bool|list<float|string|null>> $data */
     public function post(string $path, array $data): string
     {
         return $this->postWithRetry($path, $data);
@@ -68,7 +68,7 @@ readonly class Client implements ClientInterface
         }
     }
 
-    /** @param list<MappingJob>|array<string, mixed> $data */
+    /** @param list<MappingJob>|array<string, string|bool|list<float|string|null>> $data */
     private function postWithRetry(string $path, array $data, int $retryCount = 0): string
     {
         $request = $this->requestFactory->createRequest('POST', self::BaseUri . $path);

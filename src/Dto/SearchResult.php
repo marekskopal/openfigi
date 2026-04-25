@@ -7,14 +7,9 @@ namespace MarekSkopal\OpenFigi\Dto;
 /** @phpstan-import-type FigiResultType from FigiResult */
 readonly class SearchResult
 {
-    /**
-     * @param list<FigiResult>|null $data
-     */
-    public function __construct(
-        public ?array $data,
-        public ?string $error,
-        public ?string $next,
-    ) {
+    /** @param list<FigiResult>|null $data */
+    public function __construct(public ?array $data, public ?string $error, public ?string $next,)
+    {
     }
 
     /**
